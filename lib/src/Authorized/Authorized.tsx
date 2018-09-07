@@ -2,7 +2,7 @@ import React from 'react';
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
 export interface Props {
-  role: any;
+  role?: any;
   /**
    * Invert result from AuthorizationProvider.isAuthorized for render children.
    * Example: `not role={ANONYMOUS}` - render children if user not ANONYMOUS.
