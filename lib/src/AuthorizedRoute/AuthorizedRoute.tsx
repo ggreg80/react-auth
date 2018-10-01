@@ -1,7 +1,6 @@
 import React from 'react';
 import { LocationDescriptorObject } from 'history';
-import PropTypes from 'prop-types';
-import { Route, RouteProps, Redirect } from 'react-router';
+import { Route, RouteProps, Redirect, RouteComponentProps, withRouter } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
 export interface FromLocationState {
@@ -16,27 +15,23 @@ export interface Props {
   role: any;
 }
 
-/**
- * Used with `AuthorizationProvider`.
- * Render `Route` if user is authorized, else render `Redirect`.
- */
-export default class AuthorizedRoute extends React.Component<Props & RouteProps> {
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
-
-  private renderRoute = ({ isAuthorized, redirectTo }: AuthContextValue) => {
-    const { router } = this.context;
-    const authorized =
-      typeof isAuthorized === 'function' ? isAuthorized(this.props.role) : isAuthorized;
+const AuthRoute = withRouter(
+  ({
+    isAuthorized,
+    redirectTo,
+    location,
+    routeProps,
+    role,
+  }: AuthContextValue & RouteComponentProps & Props & { routeProps: RouteProps }) => {
+    const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
 
     if (!authorized) {
-      const { component, render, children, ...rest } = this.props;
+      const { component, render, children, ...rest } = routeProps;
       const to =
         typeof redirectTo === 'string'
           ? ({
               pathname: redirectTo,
-              state: { from: router.route.location.pathname },
+              state: { from: location.pathname },
             } as FromLocationDescriptorObject)
           : redirectTo;
 
@@ -47,7 +42,18 @@ export default class AuthorizedRoute extends React.Component<Props & RouteProps>
       );
     }
 
-    return <Route {...this.props} />;
+    return <Route {...routeProps} />;
+  }
+);
+
+/**
+ * Used with `AuthorizationProvider`.
+ * Render `Route` if user is authorized, else render `Redirect`.
+ */
+export default class AuthorizedRoute extends React.Component<Props & RouteProps> {
+  private renderRoute = (context: AuthContextValue) => {
+    const { role, ...routeProps } = this.props;
+    return <AuthRoute {...context} routeProps={routeProps} role={role} />;
   };
 
   render() {

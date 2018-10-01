@@ -1,7 +1,6 @@
 import React from 'react';
 import { LocationDescriptorObject } from 'history';
-import PropTypes from 'prop-types';
-import { Route, RouteProps, Redirect } from 'react-router';
+import { Route, RouteProps, Redirect, withRouter, RouteComponentProps } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
 export interface FromLocationState {
@@ -12,26 +11,22 @@ export interface FromLocationDescriptorObject extends LocationDescriptorObject {
   state?: FromLocationState;
 }
 
-/**
- * Used with `AuthorizationProvider`.
- * Render `Route` if user is logged in, else render `Redirect`.
- */
-export default class LoggedInRoute extends React.Component<RouteProps> {
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
-
-  private renderRoute = ({ isLoggedIn, redirectTo }: AuthContextValue) => {
-    const { router } = this.context;
+const AuthRoute = withRouter(
+  ({
+    isLoggedIn,
+    redirectTo,
+    location,
+    routeProps,
+  }: AuthContextValue & RouteComponentProps & { routeProps: RouteProps }) => {
     const loggedIn = typeof isLoggedIn === 'function' ? isLoggedIn() : isLoggedIn;
 
     if (!loggedIn) {
-      const { component, render, children, ...rest } = this.props;
+      const { component, render, children, ...rest } = routeProps;
       const to =
         typeof redirectTo === 'string'
           ? ({
               pathname: redirectTo,
-              state: { from: router.route.location.pathname },
+              state: { from: location.pathname },
             } as FromLocationDescriptorObject)
           : redirectTo;
 
@@ -42,8 +37,18 @@ export default class LoggedInRoute extends React.Component<RouteProps> {
       );
     }
 
-    return <Route {...this.props} />;
-  };
+    return <Route {...routeProps} />;
+  }
+);
+
+/**
+ * Used with `AuthorizationProvider`.
+ * Render `Route` if user is logged in, else render `Redirect`.
+ */
+export default class LoggedInRoute extends React.Component<RouteProps> {
+  private renderRoute = (context: AuthContextValue) => (
+    <AuthRoute {...context} routeProps={this.props} />
+  );
 
   render() {
     return <AuthContext.Consumer>{this.renderRoute}</AuthContext.Consumer>;
