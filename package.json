@@ -15,7 +15,7 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "build": "npm run clean && tsc --project ./tsconfig.json",
-    "build-to-project-langlearn": "npm run clean && tsc --project ./tsconfig.json --outDir '../project-langlearn/node_modules/@vzh/react-auth/dist/' && copyfiles package.json '../project-langlearn/node_modules/@vzh/react-auth/'",
+    "build-to-tutoron": "npm run clean && tsc --project ./tsconfig.json --outDir '~/dev/sources/tutoron/node_modules/@vzh/react-auth/dist/' && copyfiles package.json '~/dev/sources/tutoron/node_modules/@vzh/react-auth/'",
     "prepublishOnly": "npm run clean && npm run build",
     "patch-publish": "npm version patch && npm publish --access public && git push --follow-tags",
     "minor-publish": "npm version minor && npm publish --access public && git push --follow-tags",
