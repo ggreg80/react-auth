@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { LocationDescriptorObject } from 'history';
 import { Route, RouteProps, Redirect, RouteComponentProps, withRouter } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
@@ -11,8 +11,13 @@ export interface FromLocationDescriptorObject extends LocationDescriptorObject {
   state?: FromLocationState;
 }
 
-export interface Props {
+export interface AuthorizedRouteProps {
   role: any;
+}
+
+export function getFromPath(location: FromLocationDescriptorObject, fallback: string): string {
+  const { state: { from = fallback } = { from: fallback } } = location;
+  return from;
 }
 
 const AuthRoute = withRouter(
@@ -22,7 +27,9 @@ const AuthRoute = withRouter(
     location,
     routeProps,
     role,
-  }: AuthContextValue & RouteComponentProps & Props & { routeProps: RouteProps }) => {
+  }: AuthContextValue &
+    RouteComponentProps &
+    AuthorizedRouteProps & { routeProps: RouteProps }) => {
     const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
 
     if (!authorized) {
@@ -50,13 +57,10 @@ const AuthRoute = withRouter(
  * Used with `AuthorizationProvider`.
  * Render `Route` if user is authorized, else render `Redirect`.
  */
-export default class AuthorizedRoute extends React.Component<Props & RouteProps> {
-  private renderRoute = (context: AuthContextValue) => {
-    const { role, ...routeProps } = this.props;
-    return <AuthRoute {...context} routeProps={routeProps} role={role} />;
-  };
-
-  render() {
-    return <AuthContext.Consumer>{this.renderRoute}</AuthContext.Consumer>;
-  }
+export default function AuthorizedRoute({
+  role,
+  ...routeProps
+}: AuthorizedRouteProps & RouteProps): JSX.Element {
+  const context = useContext(AuthContext);
+  return <AuthRoute {...context} routeProps={routeProps} role={role} />;
 }

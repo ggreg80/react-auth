@@ -142,10 +142,10 @@
     lodash.unescape "4.0.1"
     semver "5.5.0"
 
-"@vzh/configs@^3.15.0":
-  version "3.15.0"
-  resolved "https://registry.yarnpkg.com/@vzh/configs/-/configs-3.15.0.tgz#19645cde17edc99001cb55e828b706204d51eeb7"
-  integrity sha512-cecdoK/cxBLpFcTqs2HeD8N+/D/5LfMhRGc1TVbiB+pVRYpiXGa80XX3t66atsvNtg3eMzcghD0/XK9i1Wlwdg==
+"@vzh/configs@^3.15.1":
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/@vzh/configs/-/configs-3.15.1.tgz#d7b900a692ae983f72a65a2d1f4dc43e9ea0e26d"
+  integrity sha512-nEZAxGSMDVIdx3pE1EyMZ/iUprTAItWYFwqCYac0SJCi+XaNp33+UgmRZa8nsQ/tUdkZkf6s3P+uEC3A59Liyw==
 
 acorn-jsx@^5.0.0:
   version "5.0.1"
@@ -153,9 +153,9 @@ acorn-jsx@^5.0.0:
   integrity sha512-HJ7CfNHrfJLlNTzIEUTj43LNWGkqpRLxm3YjAlcD0ACydk9XynzYsCBHxut+iqt+1aBXkx9UP/w/ZqMr13XIzg==
 
 acorn@^6.0.2:
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.0.7.tgz#490180ce18337270232d9488a44be83d9afb7fd3"
-  integrity sha512-HNJNgE60C9eOTgn974Tlp3dpLZdUr+SoxxDwPaY9J/kDNOLQTkaDgwBUXAF4SSsrAwD9RpdxuHK/EbuF+W9Ahw==
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.0.tgz#b0a3be31752c97a0f7013c5f4903b71a05db6818"
+  integrity sha512-MW/FjM+IvU9CgBzjO3UIPCE2pyEwUsoFl+VGdczOPEdxfGFjuKny/gN54mOuX7Qxmb9Rg9MCn2oKiSUeW+pjrw==
 
 ajv@^6.5.3, ajv@^6.6.1:
   version "6.8.1"
@@ -549,6 +549,11 @@ eslint-plugin-prettier@^3.0.1:
   integrity sha512-/PMttrarPAY78PLvV3xfWibMOdMDl57hmlQ2XqFeA37wd+CJ7WSxV7txqjVPHi/AAFKd2lX0ZqfsOc/i5yFCSQ==
   dependencies:
     prettier-linter-helpers "^1.0.0"
+
+eslint-plugin-react-hooks@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.0.1.tgz#76b6fb4edafab02eab0090078977687157605dd9"
+  integrity sha512-yNhvY7EFBp0mq0Bt8BHoS57GwJ4e1qSYdvDFSfPnjmiSmyGUfQFQGcQs4K0JQFDGopWkURWq58psbUJIhWZ2Kg==
 
 eslint-plugin-react@^7.12.4:
   version "7.12.4"
