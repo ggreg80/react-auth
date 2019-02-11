@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { LocationDescriptorObject } from 'history';
+import { LocationDescriptorObject, Location } from 'history';
 import { Route, RouteProps, Redirect, RouteComponentProps, withRouter } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
@@ -7,15 +7,11 @@ export interface FromLocationState {
   from: string;
 }
 
-export interface FromLocationDescriptorObject extends LocationDescriptorObject {
-  state?: FromLocationState;
-}
-
 export interface AuthorizedRouteProps {
   role: any;
 }
 
-export function getFromPath(location: FromLocationDescriptorObject, fallback: string): string {
+export function getFromPath(location: Location<FromLocationState>, fallback: string): string {
   const { state: { from = fallback } = { from: fallback } } = location;
   return from;
 }
@@ -39,7 +35,7 @@ const AuthRoute = withRouter(
           ? ({
               pathname: redirectTo,
               state: { from: location.pathname },
-            } as FromLocationDescriptorObject)
+            } as LocationDescriptorObject<FromLocationState>)
           : redirectTo;
 
       return (
