@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, RouteProps, Redirect, withRouter, RouteComponentProps } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
@@ -33,12 +33,7 @@ const AuthRoute = withRouter(
  * Used with `AuthorizationProvider`.
  * Render `Route` if user is not logged in, else render `Redirect`.
  */
-export default class NotLoggedInRoute extends React.Component<RouteProps> {
-  private renderRoute = (context: AuthContextValue) => (
-    <AuthRoute {...context} routeProps={this.props} />
-  );
-
-  render() {
-    return <AuthContext.Consumer>{this.renderRoute}</AuthContext.Consumer>;
-  }
+export default function NotLoggedInRoute(props: RouteProps): JSX.Element {
+  const context = useContext(AuthContext);
+  return <AuthRoute {...context} routeProps={props} />;
 }
