@@ -21,5 +21,7 @@ export default function Authorized({
 }: React.PropsWithChildren<AuthorizedProps>): JSX.Element | null {
   const { isAuthorized } = useContext(AuthContext);
   const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
-  return (!not && authorized) || (not && !authorized) ? (children as JSX.Element) : null;
+  const result = (!not && authorized) || (not && !authorized) ? (children as JSX.Element) : null;
+  if (result === undefined) return null;
+  return result;
 }
