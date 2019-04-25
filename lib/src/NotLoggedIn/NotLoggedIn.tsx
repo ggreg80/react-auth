@@ -8,5 +8,7 @@ import AuthContext from '../AuthContext';
 export default function NotLoggedIn({ children }: React.PropsWithChildren<{}>): JSX.Element | null {
   const { isLoggedIn } = useContext(AuthContext);
   const loggedIn = typeof isLoggedIn === 'function' ? isLoggedIn() : isLoggedIn;
-  return loggedIn ? null : (children as JSX.Element);
+  const result = loggedIn ? null : (children as JSX.Element);
+  if (result === undefined) return null;
+  return result;
 }
