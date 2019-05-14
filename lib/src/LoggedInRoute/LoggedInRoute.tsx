@@ -2,14 +2,7 @@ import React, { useContext } from 'react';
 import { LocationDescriptorObject } from 'history';
 import { Route, RouteProps, Redirect, withRouter, RouteComponentProps } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
-
-export interface FromLocationState {
-  from: string;
-}
-
-export interface FromLocationDescriptorObject extends LocationDescriptorObject {
-  state?: FromLocationState;
-}
+import { FromLocationState } from '../AuthorizedRoute';
 
 const AuthRoute = withRouter(
   ({
@@ -22,12 +15,18 @@ const AuthRoute = withRouter(
 
     if (!loggedIn) {
       const { component, render, children, ...rest } = routeProps;
-      const to =
+      const to: LocationDescriptorObject<FromLocationState> =
         typeof redirectTo === 'string'
-          ? ({
+          ? {
               pathname: redirectTo,
-              state: { from: location.pathname },
-            } as FromLocationDescriptorObject)
+              state: {
+                from: {
+                  pathname: location.pathname,
+                  search: location.search,
+                  state: location.state,
+                },
+              },
+            }
           : redirectTo;
 
       return (

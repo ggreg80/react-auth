@@ -4,7 +4,7 @@ import { Route, RouteProps, Redirect, RouteComponentProps, withRouter } from 're
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
 export interface FromLocationState {
-  from: string;
+  from: Pick<Location, 'pathname' | 'search' | 'state'>;
 }
 
 export interface AuthorizedRouteProps {
@@ -12,8 +12,7 @@ export interface AuthorizedRouteProps {
 }
 
 export function getFromPath(location: Location<FromLocationState>, fallback: string): string {
-  const { state: { from = fallback } = { from: fallback } } = location;
-  return from;
+  return (location.state && location.state.from && location.state.from.pathname) || fallback;
 }
 
 const AuthRoute = withRouter(
@@ -30,12 +29,18 @@ const AuthRoute = withRouter(
 
     if (!authorized) {
       const { component, render, children, ...rest } = routeProps;
-      const to =
+      const to: LocationDescriptorObject<FromLocationState> =
         typeof redirectTo === 'string'
-          ? ({
+          ? {
               pathname: redirectTo,
-              state: { from: location.pathname },
-            } as LocationDescriptorObject<FromLocationState>)
+              state: {
+                from: {
+                  pathname: location.pathname,
+                  search: location.search,
+                  state: location.state,
+                },
+              },
+            }
           : redirectTo;
 
       return (
