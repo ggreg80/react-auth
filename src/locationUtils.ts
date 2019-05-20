@@ -8,7 +8,7 @@ export function getFromPath(location: Location<FromLocationState>, fallback: str
   return (location.state && location.state.from && location.state.from.pathname) || fallback;
 }
 
-export default function getLocationWithState(
+export function getLocationWithState(
   to: LocationDescriptor,
   from: Location
 ): LocationDescriptorObject<FromLocationState> {

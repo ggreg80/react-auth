@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, RouteProps, Redirect, withRouter, RouteComponentProps } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
-import getLocationWithState from '../getLocationWithState';
+import { getLocationWithState } from '../locationUtils';
 
 const AuthRoute = withRouter(
   ({

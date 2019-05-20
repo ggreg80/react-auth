@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, RouteProps, Redirect, RouteComponentProps, withRouter } from 'react-router';
 import AuthContext, { AuthContextValue } from '../AuthContext';
-import getLocationWithState from '../getLocationWithState';
+import { getLocationWithState } from '../locationUtils';
 
 export interface AuthorizedRouteProps {
   role: any;
