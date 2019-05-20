@@ -2,8 +2,8 @@
   "name": "@vzh/react-auth",
   "version": "0.9.1",
   "description": "React auth components",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "author": "Vladimir Zhukov",
   "license": "MIT",
   "contributors": [
@@ -14,13 +14,13 @@
   ],
   "scripts": {
     "clean": "rimraf dist/*",
-    "build": "npm run clean && tsc --project ./tsconfig.json",
-    "build-to-tutoron": "npm run clean && tsc --project ./tsconfig.json --outDir '/home/vladimir/dev/sources/tutoron/node_modules/@vzh/react-auth/dist/' && copyfiles package.json '/home/vladimir/dev/sources/tutoron/node_modules/@vzh/react-auth/'",
-    "build-to-pwa": "npm run clean && tsc --project ./tsconfig.json --outDir '/home/vladimir/dev/sources/pwa/node_modules/@vzh/react-auth/dist/' && copyfiles package.json '/home/vladimir/dev/sources/pwa/node_modules/@vzh/react-auth/'",
-    "prepublishOnly": "npm run clean && npm run build",
-    "patch-publish": "npm version patch && npm publish --access public && git push --follow-tags",
-    "minor-publish": "npm version minor && npm publish --access public && git push --follow-tags",
-    "major-publish": "npm version major && npm publish --access public && git push --follow-tags"
+    "copy:configs": "copyfiles package.json README.md LICENSE ./dist/",
+    "build": "npm run clean && tsc --project ./tsconfig.json && npm run copy:configs",
+    "build-to-tutoron": "npm run clean && tsc --project ./tsconfig.json --outDir '/home/vladimir/dev/sources/tutoron/node_modules/@vzh/react-auth/' && copyfiles package.json '/home/vladimir/dev/sources/tutoron/node_modules/@vzh/react-auth/'",
+    "build-to-pwa": "npm run clean && tsc --project ./tsconfig.json --outDir '/home/vladimir/dev/sources/pwa/node_modules/@vzh/react-auth/' && copyfiles package.json '/home/vladimir/dev/sources/pwa/node_modules/@vzh/react-auth/'",
+    "patch-publish": "npm version patch && npm run build && npm publish ./dist/ && git push --follow-tags",
+    "minor-publish": "npm version minor && npm run build && npm publish ./dist/ && git push --follow-tags",
+    "major-publish": "npm version major && npm run build && npm publish ./dist/ && git push --follow-tags"
   },
   "devDependencies": {
     "@types/react": "16.8.17",
