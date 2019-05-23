@@ -23,8 +23,8 @@
     "major-publish": "npm version major && npm run build && npm publish ./dist/ && git push --follow-tags"
   },
   "devDependencies": {
-    "@types/react": "16.8.17",
-    "@types/react-router": "^5.0.0",
+    "@types/react": "16.8.18",
+    "@types/react-router": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "@vzh/configs": "^3.24.1",
