@@ -4,8 +4,14 @@ export interface FromLocationState {
   from: Pick<Location, 'pathname' | 'search' | 'state'>;
 }
 
-export function getFromPath(location: Location<FromLocationState>, fallback: string): string {
-  return (location.state && location.state.from && location.state.from.pathname) || fallback;
+export function getLocationFromState(
+  location: Location<FromLocationState>,
+  fallback: string | LocationDescriptorObject
+): LocationDescriptorObject {
+  return (
+    (location.state && location.state.from) ||
+    (typeof fallback === 'string' ? { pathname: fallback } : fallback)
+  );
 }
 
 export function getLocationWithState(
