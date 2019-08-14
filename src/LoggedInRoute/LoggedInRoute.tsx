@@ -15,12 +15,7 @@ const AuthRoute = withRouter(
     if (!loggedIn) {
       const { component, render, children, ...rest } = routeProps;
       const to = getLocationWithState(redirectTo, location);
-
-      return (
-        <Route {...rest}>
-          <Redirect to={to} />
-        </Route>
-      );
+      return <Route {...rest} render={() => <Redirect to={to} />} />;
     }
 
     return <Route {...routeProps} />;

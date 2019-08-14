@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthContext, { AuthContextValue } from '../AuthContext';
 
-export interface AuthorizationProviderProps {
+export interface AuthorizationProviderProps extends AuthContextValue {
   children: React.ReactNode;
 }
 
@@ -11,6 +11,6 @@ export interface AuthorizationProviderProps {
 export default function AuthorizationProvider({
   children,
   ...rest
-}: AuthorizationProviderProps & AuthContextValue): JSX.Element {
+}: AuthorizationProviderProps): JSX.Element {
   return <AuthContext.Provider value={rest}>{children}</AuthContext.Provider>;
 }

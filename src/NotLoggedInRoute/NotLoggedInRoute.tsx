@@ -17,12 +17,7 @@ const AuthRoute = withRouter(
         typeof notLoggedInRedirectTo === 'string'
           ? { pathname: notLoggedInRedirectTo, state: location.state }
           : notLoggedInRedirectTo;
-
-      return (
-        <Route {...rest}>
-          <Redirect to={to} />
-        </Route>
-      );
+      return <Route {...rest} render={() => <Redirect to={to} />} />;
     }
 
     return <Route {...routeProps} />;
