@@ -1,6 +1,6 @@
 {
   "name": "@vzh/react-auth",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "React auth components",
   "main": "index.js",
   "types": "index.d.ts",
