@@ -16,28 +16,22 @@ export function getLocationFromState(
 
 export function getLocationWithState(
   to: LocationDescriptor,
-  from: Location
+  from: Location | Location['pathname']
 ): LocationDescriptorObject<FromLocationState> {
+  const fromState: FromLocationState['from'] =
+    typeof from === 'string'
+      ? {
+          pathname: from,
+          search: '',
+          state: undefined,
+        }
+      : {
+          pathname: from.pathname,
+          search: from.search,
+          state: from.state,
+        };
+
   return typeof to === 'string'
-    ? {
-        pathname: to,
-        state: {
-          from: {
-            pathname: from.pathname,
-            search: from.search,
-            state: from.state,
-          },
-        },
-      }
-    : {
-        ...to,
-        state: {
-          ...to.state,
-          from: {
-            pathname: from.pathname,
-            search: from.search,
-            state: from.state,
-          },
-        },
-      };
+    ? { pathname: to, state: { from: fromState } }
+    : { ...to, state: { ...to.state, from: fromState } };
 }
