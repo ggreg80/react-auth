@@ -1,35 +1,8 @@
 import React, { useContext } from 'react';
-import { Route, RouteProps, Redirect, withRouter, RouteComponentProps } from 'react-router';
-import AuthContext, { AuthContextValue } from '../AuthContext';
-
-export interface NotAuthorizedRouteProps {
-  role: any;
-}
-
-const AuthRoute = withRouter(
-  ({
-    isAuthorized,
-    notLoggedInRedirectTo,
-    location,
-    routeProps,
-    role,
-  }: AuthContextValue &
-    RouteComponentProps &
-    NotAuthorizedRouteProps & { routeProps: RouteProps }) => {
-    const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
-
-    if (authorized) {
-      const { component, render, children, ...rest } = routeProps;
-      const to =
-        typeof notLoggedInRedirectTo === 'string'
-          ? { pathname: notLoggedInRedirectTo, state: location.state }
-          : notLoggedInRedirectTo;
-      return <Route {...rest} render={() => <Redirect to={to} />} />;
-    }
-
-    return <Route {...routeProps} />;
-  }
-);
+import { Route } from 'react-router';
+import AuthContext from '../AuthContext';
+import RouteRedirect from '../RouteRedirect';
+import { AuthorizedRouteProps } from '../AuthorizedRoute';
 
 /**
  * Used with `AuthorizationProvider`.
@@ -38,7 +11,14 @@ const AuthRoute = withRouter(
 export default function NotAuthorizedRoute({
   role,
   ...routeProps
-}: NotAuthorizedRouteProps & RouteProps): JSX.Element {
-  const context = useContext(AuthContext);
-  return <AuthRoute {...context} routeProps={routeProps} role={role} />;
+}: AuthorizedRouteProps): JSX.Element {
+  const { isAuthorized, notLoggedInRedirectTo } = useContext(AuthContext);
+
+  const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
+
+  if (authorized) {
+    return <RouteRedirect {...routeProps} to={notLoggedInRedirectTo} />;
+  }
+
+  return <Route {...routeProps} />;
 }

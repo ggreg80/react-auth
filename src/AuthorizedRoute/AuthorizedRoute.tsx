@@ -1,33 +1,11 @@
 import React, { useContext } from 'react';
-import { Route, RouteProps, Redirect, RouteComponentProps, withRouter } from 'react-router';
-import AuthContext, { AuthContextValue } from '../AuthContext';
-import { getLocationWithState } from '../locationUtils';
+import { Route, RouteProps } from 'react-router';
+import AuthContext from '../AuthContext';
+import RouteRedirect from '../RouteRedirect';
 
-export interface AuthorizedRouteProps {
+export interface AuthorizedRouteProps extends RouteProps {
   role: any;
 }
-
-const AuthRoute = withRouter(
-  ({
-    isAuthorized,
-    redirectTo,
-    location,
-    routeProps,
-    role,
-  }: AuthContextValue &
-    RouteComponentProps &
-    AuthorizedRouteProps & { routeProps: RouteProps }) => {
-    const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
-
-    if (!authorized) {
-      const { component, render, children, ...rest } = routeProps;
-      const to = getLocationWithState(redirectTo, location);
-      return <Route {...rest} render={() => <Redirect to={to} />} />;
-    }
-
-    return <Route {...routeProps} />;
-  }
-);
 
 /**
  * Used with `AuthorizationProvider`.
@@ -36,7 +14,14 @@ const AuthRoute = withRouter(
 export default function AuthorizedRoute({
   role,
   ...routeProps
-}: AuthorizedRouteProps & RouteProps): JSX.Element {
-  const context = useContext(AuthContext);
-  return <AuthRoute {...context} routeProps={routeProps} role={role} />;
+}: AuthorizedRouteProps): JSX.Element {
+  const { isAuthorized, redirectTo } = useContext(AuthContext);
+
+  const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
+
+  if (!authorized) {
+    return <RouteRedirect {...routeProps} to={redirectTo} />;
+  }
+
+  return <Route {...routeProps} />;
 }

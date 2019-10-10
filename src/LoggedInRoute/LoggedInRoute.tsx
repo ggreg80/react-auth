@@ -1,32 +1,20 @@
 import React, { useContext } from 'react';
-import { Route, RouteProps, Redirect, withRouter, RouteComponentProps } from 'react-router';
-import AuthContext, { AuthContextValue } from '../AuthContext';
-import { getLocationWithState } from '../locationUtils';
-
-const AuthRoute = withRouter(
-  ({
-    isLoggedIn,
-    redirectTo,
-    location,
-    routeProps,
-  }: AuthContextValue & RouteComponentProps & { routeProps: RouteProps }) => {
-    const loggedIn = typeof isLoggedIn === 'function' ? isLoggedIn() : isLoggedIn;
-
-    if (!loggedIn) {
-      const { component, render, children, ...rest } = routeProps;
-      const to = getLocationWithState(redirectTo, location);
-      return <Route {...rest} render={() => <Redirect to={to} />} />;
-    }
-
-    return <Route {...routeProps} />;
-  }
-);
+import { Route, RouteProps } from 'react-router';
+import AuthContext from '../AuthContext';
+import RouteRedirect from '../RouteRedirect';
 
 /**
  * Used with `AuthorizationProvider`.
  * Render `Route` if user is logged in, else render `Redirect`.
  */
 export default function LoggedInRoute(props: RouteProps): JSX.Element {
-  const context = useContext(AuthContext);
-  return <AuthRoute {...context} routeProps={props} />;
+  const { isLoggedIn, redirectTo } = useContext(AuthContext);
+
+  const loggedIn = typeof isLoggedIn === 'function' ? isLoggedIn() : isLoggedIn;
+
+  if (!loggedIn) {
+    return <RouteRedirect {...props} to={redirectTo} />;
+  }
+
+  return <Route {...props} />;
 }
