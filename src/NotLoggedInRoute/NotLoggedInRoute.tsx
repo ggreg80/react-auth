@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, RouteProps } from 'react-router';
-import AuthContext from '../AuthContext';
+import { AuthorizationContext } from '../AuthorizationProvider';
 import RouteRedirect from '../RouteRedirect';
 
 /**
@@ -8,13 +8,9 @@ import RouteRedirect from '../RouteRedirect';
  * Render `Route` if user is not logged in, else render `Redirect`.
  */
 export default function NotLoggedInRoute(props: RouteProps): JSX.Element {
-  const { isLoggedIn, notLoggedInRedirectTo } = useContext(AuthContext);
-
-  const loggedIn = typeof isLoggedIn === 'function' ? isLoggedIn() : isLoggedIn;
-
-  if (loggedIn) {
+  const { isLoggedIn, notLoggedInRedirectTo } = useContext(AuthorizationContext);
+  if (isLoggedIn()) {
     return <RouteRedirect {...props} to={notLoggedInRedirectTo} />;
   }
-
   return <Route {...props} />;
 }

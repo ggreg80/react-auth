@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import AuthContext from '../AuthContext';
+import { AuthorizationContext } from '../AuthorizationProvider';
 
 export interface AuthorizedProps {
   role?: any;
@@ -19,8 +19,8 @@ export default function Authorized({
   not,
   children,
 }: React.PropsWithChildren<AuthorizedProps>): JSX.Element | null {
-  const { isAuthorized } = useContext(AuthContext);
-  const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
+  const { isAuthorized } = useContext(AuthorizationContext);
+  const authorized = isAuthorized ? isAuthorized(role) : true;
   const result = (!not && authorized) || (not && !authorized) ? (children as JSX.Element) : null;
   if (result === undefined) return null;
   return result;

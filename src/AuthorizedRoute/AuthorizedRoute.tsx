@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, RouteProps } from 'react-router';
-import AuthContext from '../AuthContext';
+import { AuthorizationContext } from '../AuthorizationProvider';
 import RouteRedirect from '../RouteRedirect';
 
 export interface AuthorizedRouteProps extends RouteProps {
@@ -15,13 +15,10 @@ export default function AuthorizedRoute({
   role,
   ...routeProps
 }: AuthorizedRouteProps): JSX.Element {
-  const { isAuthorized, redirectTo } = useContext(AuthContext);
-
-  const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
-
+  const { isAuthorized, redirectTo } = useContext(AuthorizationContext);
+  const authorized = isAuthorized ? isAuthorized(role) : true;
   if (!authorized) {
     return <RouteRedirect {...routeProps} to={redirectTo} />;
   }
-
   return <Route {...routeProps} />;
 }

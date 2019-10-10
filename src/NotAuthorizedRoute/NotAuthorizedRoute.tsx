@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route } from 'react-router';
-import AuthContext from '../AuthContext';
+import { AuthorizationContext } from '../AuthorizationProvider';
 import RouteRedirect from '../RouteRedirect';
 import { AuthorizedRouteProps } from '../AuthorizedRoute';
 
@@ -12,13 +12,10 @@ export default function NotAuthorizedRoute({
   role,
   ...routeProps
 }: AuthorizedRouteProps): JSX.Element {
-  const { isAuthorized, notLoggedInRedirectTo } = useContext(AuthContext);
-
-  const authorized = typeof isAuthorized === 'function' ? isAuthorized(role) : isAuthorized;
-
+  const { isAuthorized, notLoggedInRedirectTo } = useContext(AuthorizationContext);
+  const authorized = isAuthorized ? isAuthorized(role) : true;
   if (authorized) {
     return <RouteRedirect {...routeProps} to={notLoggedInRedirectTo} />;
   }
-
   return <Route {...routeProps} />;
 }
