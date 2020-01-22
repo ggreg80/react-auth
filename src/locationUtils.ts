@@ -1,29 +1,29 @@
 import { LocationDescriptorObject, Location, LocationDescriptor } from 'history';
 
 export interface FromLocationState {
-  from: Pick<Location, 'pathname' | 'search' | 'state'>;
+  from: Pick<Location<unknown>, 'pathname' | 'search' | 'state'>;
 }
 
 export function getLocationFromState(
-  location: Location<FromLocationState>,
-  fallback: string | LocationDescriptorObject
-): LocationDescriptorObject {
+  location: Location<unknown>,
+  fallback: Location['pathname'] | LocationDescriptorObject<unknown>
+): LocationDescriptorObject<unknown> {
   return (
-    (location.state && location.state.from) ||
+    (location.state && (location.state as FromLocationState).from) ||
     (typeof fallback === 'string' ? { pathname: fallback } : fallback)
   );
 }
 
 export function getLocationWithState(
-  to: LocationDescriptor,
-  from: Location | Location['pathname']
+  to: LocationDescriptor<unknown>,
+  from: Location<unknown> | Location['pathname']
 ): LocationDescriptorObject<FromLocationState> {
   const fromState: FromLocationState['from'] =
     typeof from === 'string'
       ? {
           pathname: from,
           search: '',
-          state: undefined,
+          state: null,
         }
       : {
           pathname: from.pathname,
@@ -33,5 +33,11 @@ export function getLocationWithState(
 
   return typeof to === 'string'
     ? { pathname: to, state: { from: fromState } }
-    : { ...to, state: { ...to.state, from: fromState } };
+    : {
+        ...to,
+        state: {
+          ...(to.state && typeof to.state === 'object' ? to.state : undefined),
+          from: fromState,
+        },
+      };
 }
