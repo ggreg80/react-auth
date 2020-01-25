@@ -10,12 +10,13 @@ import { AuthorizedRouteProps } from '../AuthorizedRoute';
  */
 export default function NotAuthorizedRoute({
   role,
+  redirectTo,
   ...routeProps
 }: AuthorizedRouteProps): JSX.Element {
   const { isAuthorized, notLoggedInRedirectTo } = useContext(AuthorizationContext);
   const authorized = isAuthorized ? isAuthorized(role) : true;
   if (authorized) {
-    return <RouteRedirect {...routeProps} to={notLoggedInRedirectTo} />;
+    return <RouteRedirect {...routeProps} to={redirectTo || notLoggedInRedirectTo} />;
   }
   return <Route {...routeProps} />;
 }
