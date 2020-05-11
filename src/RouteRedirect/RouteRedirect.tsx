@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteProps, Redirect, RedirectProps, useLocation } from 'react-router';
-import { getLocationWithState } from '../locationUtils';
+import getLocationWithState from '@vlazh/route-utils/getLocationWithState';
 
 export interface RouteRedirectProps extends RouteProps, Pick<RedirectProps, 'to'> {}
 

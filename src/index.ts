@@ -1,6 +1,5 @@
 export { default as AuthorizationProvider } from './AuthorizationProvider';
 export * from './AuthorizationProvider';
-export * from './locationUtils';
 export { default as LoggedInRoute } from './LoggedInRoute';
 export * from './LoggedInRoute';
 export { default as NotLoggedInRoute } from './NotLoggedInRoute';
