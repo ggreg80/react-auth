@@ -4,7 +4,7 @@
   "description": "React auth components",
   "main": "index.js",
   "types": "index.d.ts",
-  "author": "Vladimir Zhukov",
+  "author": "VZH",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist/*",
